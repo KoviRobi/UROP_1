@@ -2,12 +2,36 @@
 <html>
   <head>
     <title>Test login page</title>
+    <script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        function authenticate(name, pass)
+        {
+            jQuery.ajax(
+                { async:    true
+                , url:      "rest/Login"
+                , type:     "POST"
+                , dataType: "json"
+                , data:     { username: name, password: pass }
+                , success:  function (data)
+                            {
+                                alert(data.authenticationCookie);
+                            }
+            });
+            return true;
+        }
+    </script>
   </head>
   <body>
-    <form name="login" action="rest/Login" method="post">
-    <label for="username">Username:</label> <input type="text" name="username" id="username"/> <br/>
-    <label for="password">Password:</label> <input type="text" name="password" id="password"/>
-    <input type="submit" value="Send">
+
+    <!-- Login form -->
+    <form action="rest/Login" method="POST" onSubmit='authenticate($("username"), $("password"))' >
+        <label for="username">Username:</label> <input type="text" name="username" id="username"/> <br/>
+        <label for="password">Password:</label> <input type="password" name="password" id="password"/>
+        <input type="button" onClick='authenticate($("username"), $("password"))' value="Send">
     </form>
+    <noscript>
+        You need JavaScript enabled, sorry.
+    </noscript>
+
   </body>
 </html>
