@@ -4,7 +4,7 @@ var chatApp = angular.moddule('chatApp', []);
 chatApp.controller('UserListCtrl',
   function ($scope)
   {
-    scope.users =
+    $scope.users =
       [ { 'name' : 'test1' }
       , { 'name' : 'test2' }
       ];
