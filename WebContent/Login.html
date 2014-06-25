@@ -4,16 +4,21 @@
     <title>Test login page</title>
     <script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript">
-        function authenticate(name, pass)
-        {
+        function UserAction(name, pass, action)
+        { // TODO: ^^^^^^^^ Proper API calls
             jQuery.ajax(
                 { async:    true
-                , url:      "rest/Users/Login"
+                , url:      "rest/Users/" + action
                 , type:     "POST"
                 , dataType: "JSON"
                 , data:     { username: name, password: pass }
                 , success:  function (data)
                             {
+                                if (data.error != undefined)
+                                {
+                                    alert ("Error happened!\n" + data.error);
+                                    return;
+                                }
                                 alert(data.authenticationCookie);
                             }
             });
@@ -27,7 +32,9 @@
     <form action="rest/Login" method="POST" onSubmit='authenticate($("username").value, $("password").value)' >
         <label for="username">Username:</label> <input type="text" name="username" id="username"/> <br/>
         <label for="password">Password:</label> <input type="password" name="password" id="password"/>
-        <input type="submit" onClick='authenticate($("username").value, $("password").value)' value="Send">
+        <input type="button" onClick='UserAction($("#username").val(), $("#password").val(), "Login")' value="Send">
+        <input type="button" onClick='UserAction($("#username").val(), $("#password").val(), "Add")' value="Create new user">
+        <input type="button" onClick='UserAction($("#username").val(), $("#password").val(), "Remove")' value="Remove username">
     </form>
     <noscript>
         You need JavaScript enabled, sorry.

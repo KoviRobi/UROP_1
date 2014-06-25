@@ -1,9 +1,9 @@
 package com.github.KoviRobi;
 
-public class UserExistsException extends Exception {
+public class UserExistanceException extends Exception {
     String username;
 
-    public UserExistsException (String username)
+    public UserExistanceException (String username)
     {
         super (username);
         this.username = username;
