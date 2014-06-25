@@ -1,43 +1,48 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- vim: set sts=2 ts=2 sw=2 et : -->
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>Test login page</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <script type="text/javascript" src="webjars/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript">
-        function UserAction(name, pass, action)
-        { // TODO: ^^^^^^^^ Proper API calls
-            jQuery.ajax(
-                { async:    true
-                , url:      "rest/User/" + action
-                , type:     "POST"
-                , dataType: "JSON"
-                , data:     { username: name, password: pass }
-                , success:  function (data)
-                            {
-                                if (data.error != undefined)
-                                {
-                                    alert ("Error happened!\n" + data.error);
-                                    return;
-                                }
-                                alert(data.authenticationCookie);
-                            }
-            });
-            return true;
-        }
+      function UserAction(name, pass, action)
+      { // TODO: ^^^^^^^^ Proper API calls
+        jQuery.ajax(
+          { async:    true
+            , url:      "rest/User/" + action
+            , type:     "POST"
+            , dataType: "JSON"
+            , data:     { username: name, password: pass }
+            , success:  function (data)
+                        {
+                          if (data.error != undefined)
+                          {
+                            alert ("Error happened!\n" + data.error);
+                            return;
+                          }
+                          alert(data.authenticationCookie);
+                        }
+        });
+        return true;
+      }
     </script>
   </head>
   <body>
 
     <!-- Login form -->
-    <form action="rest/Login" method="POST" onSubmit='authenticate($("username").value, $("password").value)' >
-        <label for="username">Username:</label> <input type="text" name="username" id="username"/> <br/>
-        <label for="password">Password:</label> <input type="password" name="password" id="password"/>
-        <input type="button" onClick='UserAction($("#username").val(), $("#password").val(), "Login")' value="Send">
-        <input type="button" onClick='UserAction($("#username").val(), $("#password").val(), "Add")' value="Create new user">
-        <input type="button" onClick='UserAction($("#username").val(), $("#password").val(), "Remove")' value="Remove username">
-    </form>
+    <p>
+      <label for="username">Username:</label> <input type="text" name="username" id="username"/> <br/>
+      <label for="password">Password:</label> <input type="password" name="password" id="password"/>
+      <input type="submit" onclick='UserAction($("#username").val(), $("#password").val(), "Login")' value="Send"/>
+      <input type="button" onclick='UserAction($("#username").val(), $("#password").val(), "Add")' value="Create new user"/>
+      <input type="button" onclick='UserAction($("#username").val(), $("#password").val(), "Remove")' value="Remove username"/>
+    </p>
     <noscript>
+      <p>
         You need JavaScript enabled, sorry.
+      </p>
     </noscript>
 
   </body>
