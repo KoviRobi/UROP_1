@@ -3,7 +3,8 @@ package com.github.KoviRobi;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-public class ErrorResponse implements Response {
+// Class to hold JSON (Jackson2) data
+public class ErrorResponse implements ResponseType {
     @JsonProperty("error") String error;
 
     @JsonCreator public ErrorResponse

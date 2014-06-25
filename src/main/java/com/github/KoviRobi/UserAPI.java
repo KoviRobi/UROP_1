@@ -1,9 +1,6 @@
 package com.github.KoviRobi;
 
-import java.util.Hashtable;
-
-
-// import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
@@ -25,31 +22,29 @@ public class UserAPI {
                            @DefaultValue("") @FormParam("password") String pass)
     {
         try
-        { // TODO: Avoid repeated code, viz. same catch blocks
+        {   // TODO: Avoid repeated code, viz. same catch blocks
             if (UserInterface.getInstance().authenticateUser(name, pass))
-                 return new LoginResponse("cookie");
-            else return new LoginResponse("noauth");
+                // TODO: HMAC
+                 return Response.status(200).entity(new LoginResponse("cookie")).build();
+            else return Response.status(200).entity(new LoginResponse("noauth")).build();
         }
         catch (NoSuchAlgorithmException e)
-        {
-            // TODO: Log
+        {   // TODO: Log
             String error = "Not able to use SHA-512!";
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(501).entity(new ErrorResponse(error)).build();
         }
         catch (UnknownHostException e)
-        {
-            // TODO: Log
+        {   // TODO: Log
             String error = "Not able to connect to MongoDB!" + e.getMessage();
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(503).entity(new ErrorResponse(error)).build();
         }
         catch (MongoTimeoutException e)
-        {
-            // TODO: Log
+        {   // TODO: Log
             String error = "Connection to database timed out!";
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(503).entity(new ErrorResponse(error)).build();
         }
     }
 
@@ -62,36 +57,31 @@ public class UserAPI {
         try
         {
             UserInterface.getInstance().addUser(name, pass);
-                // TODO: Proper response
-            return new LoginResponse("User successfully added");
+            return Response.status(200).build();
         }
         catch (NoSuchAlgorithmException e)
-        {
-            // TODO: Log
+        {   // TODO: Log
             String error = "Not able to use SHA-512!";
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(501).entity(new ErrorResponse(error)).build();
         }
         catch (UnknownHostException e)
-        {
-            // TODO: Log
-            String error = "Not able to connect to MongoDB!" + e.getMessage();
+        {   // TODO: Log
+            String error = "Not able to connect to MongoDB!\n" + e.getMessage();
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(503).entity(new ErrorResponse(error)).build();
         }
         catch (MongoTimeoutException e)
-        {
-            // TODO: Log
+        {   // TODO: Log
             String error = "Connection to database timed out!";
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(503).entity(new ErrorResponse(error)).build();
         }
         catch (UserExistanceException e)
-        {
-            // TODO: Log
+        {   // TODO: Log
             String error = "User already exists";
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(409).entity(new ErrorResponse(error)).build();
         }
     }
 
@@ -103,36 +93,31 @@ public class UserAPI {
         try
         {
             UserInterface.getInstance().delUser(name);
-                // TODO: Proper response
-            return new LoginResponse("User successfully deleted");
+            return Response.status(200).build();
         }
         catch (NoSuchAlgorithmException e)
-        {
-            // TODO: Log
+        {   // TODO: Log
             String error = "Not able to use SHA-512!";
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(501).entity(new ErrorResponse(error)).build();
         }
         catch (UnknownHostException e)
-        {
-            // TODO: Log
+        {   // TODO: Log
             String error = "Not able to connect to MongoDB!" + e.getMessage();
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(503).entity(new ErrorResponse(error)).build();
         }
         catch (MongoTimeoutException e)
-        {
-            // TODO: Log
+        {   // TODO: Log
             String error = "Connection to database timed out!";
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(503).entity(new ErrorResponse(error)).build();
         }
         catch (UserExistanceException e)
-        {
-            // TODO: Log
+        {   // TODO: Log
             String error = "User does not exists";
             System.err.println(error);
-            return new ErrorResponse (error);
+            return Response.status(409).entity(new ErrorResponse(error)).build();
         }
     }
 }
