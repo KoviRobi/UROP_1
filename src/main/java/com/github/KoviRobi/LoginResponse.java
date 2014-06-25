@@ -1,22 +1,13 @@
 package com.github.KoviRobi;
 
-public class LoginResponse {
-    String authenticationCookie = "none";
-    boolean hasAuthenticated;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonCreator;
 
-    public boolean isAuthenticated () { return hasAuthenticated; }
-    public void setAuthenticated (boolean value) { hasAuthenticated = value; }
-    public String getAuthenticationCookie() { return authenticationCookie; }
-    public void setAuthenticationCookie(String value) { authenticationCookie = value; }
+// Class to hold JSON (Jackson2) data
+public class LoginResponse implements Response {
+    @JsonProperty("authenticationCookie") String authenticationCookie;
 
-    LoginResponse ( boolean hasAuthenticated )
-    {
-        this.hasAuthenticated = hasAuthenticated;
-    }
-
-    LoginResponse ( boolean hasAuthenticated, String cookie )
-    {
-        this.hasAuthenticated = hasAuthenticated;
-        authenticationCookie = cookie;
-    }
+    @JsonCreator public LoginResponse
+        (@JsonProperty("authenticationCookie") String cookie)
+        { authenticationCookie = cookie; }
 }

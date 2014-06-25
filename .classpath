@@ -38,5 +38,6 @@
 	<classpathentry exported="true" kind="var" path="M2_REPO/org/jboss/resteasy/resteasy-jaxrs/3.0.4.Final/resteasy-jaxrs-3.0.4.Final.jar"/>
 	<classpathentry exported="true" kind="var" path="M2_REPO/org/jboss/resteasy/resteasy-jackson2-provider/3.0.4.Final/resteasy-jackson2-provider-3.0.4.Final.jar"/>
 	<classpathentry exported="true" kind="var" path="M2_REPO/org/webjars/jquery/2.1.1/jquery-2.1.1.jar"/>
+	<classpathentry exported="true" kind="var" path="M2_REPO/org/mongodb/mongo-java-driver/2.12.2/mongo-java-driver-2.12.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

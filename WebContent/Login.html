@@ -8,9 +8,9 @@
         {
             jQuery.ajax(
                 { async:    true
-                , url:      "rest/Login"
+                , url:      "rest/Users/Login"
                 , type:     "POST"
-                , dataType: "json"
+                , dataType: "JSON"
                 , data:     { username: name, password: pass }
                 , success:  function (data)
                             {
@@ -24,10 +24,10 @@
   <body>
 
     <!-- Login form -->
-    <form action="rest/Login" method="POST" onSubmit='authenticate($("username"), $("password"))' >
+    <form action="rest/Login" method="POST" onSubmit='authenticate($("username").value, $("password").value)' >
         <label for="username">Username:</label> <input type="text" name="username" id="username"/> <br/>
         <label for="password">Password:</label> <input type="password" name="password" id="password"/>
-        <input type="button" onClick='authenticate($("username"), $("password"))' value="Send">
+        <input type="submit" onClick='authenticate($("username").value, $("password").value)' value="Send">
     </form>
     <noscript>
         You need JavaScript enabled, sorry.
