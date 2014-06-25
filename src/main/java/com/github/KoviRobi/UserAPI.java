@@ -14,8 +14,8 @@ import java.security.NoSuchAlgorithmException;
 import java.net.UnknownHostException;
 import com.mongodb.MongoTimeoutException;
 
-@Path("/Users")
-public class UsersAPI {
+@Path("/User")
+public class UserAPI {
 
     // Entry point for login method
     @POST
