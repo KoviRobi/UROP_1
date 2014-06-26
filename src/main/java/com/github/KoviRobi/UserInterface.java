@@ -73,7 +73,7 @@ public class UserInterface {
     static UserInterface getTestInstance () throws UnknownHostException, NoSuchAlgorithmException
     {
         if (testInstance == null)
-            testInstance = new UserInterface ("local", "users");
+            testInstance = new UserInterface ("test", "users");
         return testInstance;
     }
     // }}}
