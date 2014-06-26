@@ -1,0 +1,116 @@
+/* vim: set foldmethod=marker sts=2 ts=2 sw=2 : */
+body
+{
+  position : fixed;
+  top : 0;
+  bottom : 0;
+  left : 0;
+  right : 0;
+}
+
+/* {{{ User list */
+#users
+{
+  border-left : thin solid black;
+  margin-left: 0;
+  position: fixed;
+  left : 80%;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
+}
+
+#users ul
+{
+  list-style-type : disc;
+  list-style-position : outside;
+}
+#users ul .away
+{
+  color : gray;
+}
+#users ul .online
+{
+  color : green;
+}
+#users ul li p
+{
+  color : black;
+  font-size : 12pt;
+  margin : 0;
+  padding : 0;
+}
+
+#user-query
+{
+  display : inline;
+}
+
+#user-query-box
+{
+  bottom: 0;
+  border-left : 0;
+  border-right : 0;
+  border-top : thin solid black;
+  width : 100%;
+}
+/* }}} */
+
+/* {{{ Chat message textarea */
+#chat-message
+{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 20%;
+  height: 10%;
+  margin-right: 0;
+  padding-right: 0;
+  border-top: thin solid black;
+}
+
+#chat-message-textarea
+{
+  resize: auto;
+  width: 90%;
+  height: 100%;
+  border: none;
+}
+
+#chat-message-submit
+{
+  position: absolute;
+  height: 100%;
+  width: 9.8%;
+  border: none;
+  border-left: thin solid black;
+  border-right: thin solid black;
+}
+/* }}} */
+
+/* {{{ Message history */
+#message-history
+{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 20%;
+  bottom: 10%;
+  overflow-y: scroll;
+}
+/* }}} */
+
+.normal-font
+{
+  font-family: normal;
+  font-style: normal;
+  font-size: larger;
+}
+
+.tiny-font
+{
+  font-variant: small-caps;
+  font-weight: lighter;
+  font-size: smaller;
+}
