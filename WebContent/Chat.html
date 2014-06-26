@@ -14,7 +14,7 @@
     <div id="message-history" ng-controller="MessageHistoryCtrl">
       <table>
         <tr ng-repeat="message in messages">
-          <td class="tiny-font">{{message.time}}</td>
+          <td id="time" class="tiny-font">{{message.time}}</td>
           <td class="normal-font">{{message.text}}</td>
         </tr>
       </table>

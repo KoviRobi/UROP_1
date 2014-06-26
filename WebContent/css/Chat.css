@@ -99,6 +99,11 @@ body
   bottom: 10%;
   overflow-y: scroll;
 }
+
+#message-history #time
+{
+  vertical-align: top;
+}
 /* }}} */
 
 .normal-font

@@ -2,29 +2,44 @@
 var chatApp = angular.module('chatApp', []);
 
 chatApp.controller('UserListCtrl',
-  [ '$scope', '$http',
-    function ($scope, $http)
+  [ '$scope', '$http', '$interval',
+    function ($scope, $http, $interval)
     {
-      $http.get('js/test-users.json').success(
-        function (data)
-        {
-          $scope.users = data;
-        }
-      );
+
+      var updateUsers = function ()
+      {
+        $http.get('js/test-users.json').success(
+          function (data)
+          {
+            $scope.users = data;
+          }
+        );
+      };
+
+      updateUsers();
+
+      $interval(updateUsers, 50000);
     }
   ]
 );
 
 chatApp.controller('MessageHistoryCtrl',
-  [ '$scope', '$http',
-    function ($scope, $http)
+  [ '$scope', '$http', '$interval',
+    function ($scope, $http, $interval)
     {
-      $http.get('js/test-messages.json').success(
-        function (data)
-        {
-          $scope.messages = data;
-        }
-      );
+      var updateMessages = function ()
+      {
+        $http.get('js/test-messages.json').success(
+          function (data)
+          {
+            $scope.messages = data;
+          }
+        );
+      };
+
+      updateMessages();
+
+      $interval(updateMessages, 50000);
     }
   ]
 );
