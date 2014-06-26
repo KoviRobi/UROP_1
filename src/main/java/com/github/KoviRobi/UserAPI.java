@@ -24,9 +24,10 @@ public class UserAPI {
         try
         {   // TODO: Avoid repeated code, viz. same catch blocks
             if (UserInterface.getInstance().authenticateUser(name, pass))
-                // TODO: HMAC
-                 return Response.status(200).entity(new LoginResponse("cookie")).build();
-            else return Response.status(200).entity(new LoginResponse("noauth")).build();
+                // TODO: HMAC and proper cookies!
+                 return Response.status(200).entity
+                     (new LoginResponse(Long.toString(UserInterface.setUser(name)))).build();
+            else return Response.status(200).entity(new LoginResponse("")).build();
         }
         catch (NoSuchAlgorithmException e)
         {   // TODO: Log

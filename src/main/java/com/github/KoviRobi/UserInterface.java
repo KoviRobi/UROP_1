@@ -10,12 +10,44 @@ import java.security.NoSuchAlgorithmException;
 
 import java.net.UnknownHostException;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Random;
+
 // Also a singleton class, as we need to throw UnknownHostException at some point,
 // but not sure how exceptions and static work together TODO:<-
 public class UserInterface {
     private static UserInterface instance;
     MessageDigest md;
     DBCollection usersCollection;
+
+    // {{{ TODO: Implement using cookies
+
+    static Map<Long, String> AuthenticatedUsers = new HashMap<Long, String>();
+    static Random rand = new Random();
+
+    static Collection<String> getUsers ()
+    {
+        return AuthenticatedUsers.values();
+    }
+
+    static String getUser (String token)
+    {
+        return AuthenticatedUsers.get(token);
+    }
+
+    static long setUser (String username)
+    {
+        long token = rand.nextLong();
+        
+        while (AuthenticatedUsers.containsKey(token))
+            token = rand.nextLong();
+
+        AuthenticatedUsers.put(token, username);
+        return token;
+    }
+    // }}}
 
     private UserInterface (String dbName, String collectionName) throws UnknownHostException, NoSuchAlgorithmException
     { // REQUIRES: Database and collection in that database must exist
@@ -39,7 +71,9 @@ public class UserInterface {
             ("password", md.digest(password.getBytes()));
         DBObject result = usersCollection.findOne(query);
         if (result != null)
+        {
             return true;
+        }
         return false;
     }
 
