@@ -1,21 +1,46 @@
 // vim: set sts=2 ts=2 sw=2 et :
 var chatControllers = angular.module('chatControllers', [ 'ngCookies' ]);
 
+function XHRMessage(value, responseHeaders)
+{
+  alert((value.message == undefined)
+        ?"Server forgot to put message, anyway, success!"
+        :value.message);
+}
+
+function XHRError(httpResponse)
+{
+  console.log(httpResponse);
+  if (httpResponse.data != undefined
+   && httpResponse.data.error != undefined)
+    alert (httpResponse.data.error);
+  else if (httpResponse.status != undefined)
+    alert ("Got status of "
+         + httpResponse.status
+         + ", which is not a success. Sorry, I don't know more.");
+  else alert ("Something went wrong and I don't know anything about it.\n"
+            + "Please email the administrator with a small message, "
+            + "containing the current time (don't forget to include your timezone.");
+}
+
 chatControllers.controller('ChatCtrl',
   [ '$scope', 'Chat', '$interval', '$cookies', '$cookieStore',
     function ($scope, Chat, $interval, $cookies, $cookieStore)
     {
       $cookieStore.remove("lastMessage");
 
-      $scope.users = new Array();
       $scope.messages = new Array();
 
       $scope.sendMessage = function (message)
       {
-        Chat.sendMessage({"message" : message});
+        Chat.sendMessage(null, {"message" : message},
+          function ()
+          {
+            $scope.chatMessageTextarea = "";
+          }, XHRError);
       }
 
-      var updateUsers = function ()
+      var update = function ()
       {
         $scope.users = Chat.getUsers();
 
@@ -37,9 +62,9 @@ chatControllers.controller('ChatCtrl',
         );
       };
 
-      updateUsers();
+      update();
 
-      $interval(updateUsers, 5000);
+      $interval(update, 5000);
     }
   ]
 );
@@ -48,23 +73,13 @@ chatControllers.controller('LoginCtrl',
   [ '$scope', 'User', '$location',
     function ($scope, User, $location)
     {
-      var XHRMessage = function (value, responseHeaders)
-      {
-        alert(value.message);
-      }
-
-      var XHRError = function (httpResponse)
-      {
-        alert(httpResponse.data.error);
-      }
 
       $scope.login   = function (username, password)
       {
         User.login(null, {'username' : username, 'password' : password},
           function (value, responseHeaders) // Success
           {
-            console.log(value);
-            console.log(responseHeaders);
+            $location.path("/Chat");
           }, XHRError);
       };
 
@@ -73,9 +88,9 @@ chatControllers.controller('LoginCtrl',
         User.addUser(null, {'username' : username, 'password' : password}, XHRMessage, XHRError);
       };
 
-      $scope.delUser = function (username)
+      $scope.delUser = function (username, password)
       {
-        User.delUser(null, {'username' : username}, XHRMessage, XHRError);
+        User.delUser(null, {'username' : username, 'password' : password}, XHRMessage, XHRError);
       };
     }
   ]

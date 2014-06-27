@@ -24,6 +24,7 @@ public class UserInterface {
     DBCollection usersCollection;
 
     // {{{ TODO: Is this the best way? Also, time to live? Also, stale tokens?
+    // Clearly we need to figure out how to do sessions!
     static Map<Long, String> AuthenticatedUsers = new HashMap<Long, String>();
     static Random rand = new Random();
 

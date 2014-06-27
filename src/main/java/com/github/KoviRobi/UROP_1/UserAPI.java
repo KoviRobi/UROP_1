@@ -7,8 +7,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.DefaultValue;
 
 import java.security.NoSuchAlgorithmException;
 import java.net.UnknownHostException;
@@ -23,8 +21,16 @@ public class UserAPI {
     @Path("/Login")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response Login ( UserRequest data)
+    public Response Login (UserResponse data)
     {
+        if (data == null
+         || data.password == null
+         || data.username == null)
+            return Response
+                     .status(400) // Bad request
+                     .entity(new ErrorResponse("No data supplied!"))
+                     .build();
+
         try
         {
             System.err.println("Logging in: \"" + data.username + "\":\"" + data.password + "\"");
@@ -78,8 +84,16 @@ public class UserAPI {
     @Path("/Add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response Add (UserRequest data)
+    public Response Add (UserResponse data)
     {
+        if (data == null
+         || data.password == null
+         || data.username == null)
+            return Response
+                     .status(400) // Bad request
+                     .entity(new ErrorResponse("No data supplied!"))
+                     .build();
+
         try
         {
             UserInterface.getInstance().addUser(data.username, data.password);
@@ -118,8 +132,16 @@ public class UserAPI {
     @Path("/Remove")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response Remove (UserRequest data)
+    public Response Remove (UserResponse data)
     {
+        if (data == null
+         || data.password == null
+         || data.username == null)
+            return Response
+                     .status(400) // Bad request
+                     .entity(new ErrorResponse("No data supplied!"))
+                     .build();
+
         try
         {
             // Authenticate to remove user
@@ -143,7 +165,7 @@ public class UserAPI {
         }
         catch (UnknownHostException e)
         {   // TODO: Log
-            String error = "Not able to connect to MongoDB!" + e.getMessage();
+            String error = "Not able to connect to MongoDB!\n" + e.getMessage();
             System.err.println(error);
             return Response.status(503).entity(new ErrorResponse(error)).build();
         }
@@ -155,7 +177,7 @@ public class UserAPI {
         }
         catch (UserExistanceException e)
         {   // TODO: Log
-            String error = "User does not exists";
+            String error = "User does not exists!";
             System.err.println(error);
             return Response.status(409).entity(new ErrorResponse(error)).build();
         }
