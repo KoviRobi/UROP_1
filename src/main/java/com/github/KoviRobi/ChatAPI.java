@@ -7,6 +7,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.GET;
 import javax.ws.rs.CookieParam;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.DefaultValue;
 
 import java.util.List;
@@ -60,8 +61,9 @@ public class ChatAPI {
     @Produces("application/json")
     public Response SendMessage (@CookieParam("token") long token,
                                  //@FormParam("message") String message)
-                                 @javax.ws.rs.QueryParam("message") String message)
+                                 @HeaderParam("message") String message)
     {
+        System.out.println(message);
         if (message == null)
             return Response.status(400).build();
 

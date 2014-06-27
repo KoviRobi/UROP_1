@@ -10,6 +10,11 @@ chatControllers.controller('ChatCtrl',
       $scope.users = new Array();
       $scope.messages = new Array();
 
+      $scope.sendMessage = function (message)
+      {
+        Chat.sendMessage({"message" : message});
+      }
+
       var updateUsers = function ()
       {
         $scope.users = Chat.getUsers();

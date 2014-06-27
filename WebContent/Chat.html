@@ -18,7 +18,7 @@
       <table>
         <tr ng-repeat="message in messages track by $index">
           <td id="time" class="tiny-font">{{message.time}}</td>
-          <td id="time" class="tiny-font">[{{message.username}}]</td>
+          <td id="username" class="tiny-font">[{{message.username}}]</td>
           <td class="normal-font">{{message.message}}</td>
         </tr>
       </table>
@@ -34,8 +34,11 @@
       </div>
     </div>
     <div id="chat-message">
-      <textarea name="message" class="normal-font" id="chat-message-textarea">{{chatMessage}}</textarea>
-      <input type="submit" id="chat-message-submit" ng-click="alert('foo');" ng-init="chatMessage='Enter message here'"/>
+      <textarea ng-model="chatMessageTextarea" name="chatMessageTextarea" class="normal-font" id="chat-message-textarea" required></textarea>
+      <input type="submit"
+             id="chat-message-submit"
+             ng-click="sendMessage(chatMessageTextarea);"
+             ng-init="chatMessageTextarea=''"/>
     </div>
   </body>
 </html>
