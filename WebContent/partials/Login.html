@@ -1,0 +1,13 @@
+<!-- vim: set sts=2 ts=2 sw=2 et : -->
+<p>
+	<label for="username">Username:</label> <input type="text"
+		name="username" id="username" /> <br /> <label for="password">Password:</label>
+	<input type="password" name="password" id="password" /> <input
+		type="submit"
+		onclick='UserAction($("#username").val(), $("#password").val(), "Login")'
+		value="Send" /> <input type="button"
+		onclick='UserAction($("#username").val(), $("#password").val(), "Add")'
+		value="Create new user" /> <input type="button"
+		onclick='UserAction($("#username").val(), $("#password").val(), "Remove")'
+		value="Remove username" />
+</p>
