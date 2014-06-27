@@ -64,19 +64,20 @@ public class ChatAPI {
     @Path("/SendMessage")
     @Produces("application/json")
     public Response SendMessage (@CookieParam("token") long token,
-                                 @FormParam("message") String message)
-                                 //@HeaderParam("message") String message)
+                                 MessageResponse message)
     {
-        System.out.println(message);
         if (message == null)
-            return Response.status(400).build();
+            return Response
+                     .status(400) // Bad request
+                     .entity(new ErrorResponse("No message given!"))
+                     .build();
 
         try
         {
             if (UserInterface.getUser(token) == null)
                 return Response.status(401).build(); // Unauthorised
 
-            ChatInterface.getInstance().sendMessage(UserInterface.getUser(UserInterface.setUser("foo")), message);
+            ChatInterface.getInstance().sendMessage(UserInterface.getUser(token), message.message);
             return Response.status(200).build(); // Success
         }
         catch(UnknownHostException e)

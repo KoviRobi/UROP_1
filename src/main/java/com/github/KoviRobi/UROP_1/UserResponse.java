@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 // Class to hold JSON (Jackson2) data
-class UserRequest implements ResponseType {
+class UserResponse implements ResponseType {
     @JsonProperty("username") String username;
     @JsonProperty("password") String password;
 
-    @JsonCreator public UserRequest
+    @JsonCreator public UserResponse
         (@JsonProperty("username") String username
         ,@JsonProperty("password") String password)
         { this.username = username;
