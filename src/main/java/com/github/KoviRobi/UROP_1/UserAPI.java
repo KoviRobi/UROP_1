@@ -1,4 +1,4 @@
-package com.github.KoviRobi;
+package com.github.KoviRobi.UROP_1;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;

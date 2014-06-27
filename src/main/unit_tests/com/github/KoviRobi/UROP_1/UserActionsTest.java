@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.github.KoviRobi;
+package com.github.KoviRobi.UROP_1;
 
 import static org.junit.Assert.*;
 
@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.security.NoSuchAlgorithmException;
 import java.net.UnknownHostException;
+
 import com.mongodb.MongoTimeoutException;
 
 /**

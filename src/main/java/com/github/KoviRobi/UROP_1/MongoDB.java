@@ -1,4 +1,4 @@
-package com.github.KoviRobi;
+package com.github.KoviRobi.UROP_1;
 
 import com.mongodb.MongoClient;
 
