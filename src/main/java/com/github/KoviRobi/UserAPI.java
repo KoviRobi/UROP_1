@@ -1,5 +1,6 @@
 package com.github.KoviRobi;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.Consumes;
@@ -11,6 +12,7 @@ import javax.ws.rs.DefaultValue;
 
 import java.security.NoSuchAlgorithmException;
 import java.net.UnknownHostException;
+
 import com.mongodb.MongoTimeoutException;
 
 @Path("/User")
@@ -19,17 +21,18 @@ public class UserAPI {
     // Entry point for login method
     @POST
     @Path("/Login")
-    @Consumes("application/json")
-    @Produces("application/json")
-    public Response Login (@DefaultValue("") @FormParam("username") String name, 
-                           @DefaultValue("") @FormParam("password") String pass)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response Login ( UserRequest data)
     {
         try
-        {   // TODO: Avoid repeated code, viz. same catch blocks
-            if (UserInterface.getInstance().authenticateUser(name, pass))
+        {
+            System.err.println("Logging in: \"" + data.username + "\":\"" + data.password + "\"");
+
+            if (UserInterface.getInstance().authenticateUser(data.username, data.password))
             {
                 // TODO: HMAC
-                long userToken = UserInterface.setUser(name);
+                long userToken = UserInterface.setUser(data.username);
 
                 NewCookie authCookie = new NewCookie(
        /* name:    */   "token"
@@ -41,13 +44,15 @@ public class UserAPI {
        /* secure:  */ , false
                  );
 
-                System.err.println("Logged in: " + name + ":" + pass);
 
                  return Response.status(200)
                      .cookie(authCookie)
                      .build();
             }
-            else return Response.status(401).build();
+            else return Response
+                          .status(401)
+                          .entity(new ErrorResponse("Failed to log in!"))
+                          .build();
         }
         catch (NoSuchAlgorithmException e)
         {   // TODO: Log
@@ -57,7 +62,7 @@ public class UserAPI {
         }
         catch (UnknownHostException e)
         {   // TODO: Log
-            String error = "Not able to connect to MongoDB!" + e.getMessage();
+            String error = "Not able to connect to MongoDB!\n" + e.getMessage();
             System.err.println(error);
             return Response.status(503).entity(new ErrorResponse(error)).build();
         }
@@ -71,14 +76,17 @@ public class UserAPI {
 
     @POST
     @Path("/Add")
-    @Produces("application/json")
-    public Response Add (@DefaultValue("") @FormParam("username") String name,
-                         @DefaultValue("") @FormParam("password") String pass)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response Add (UserRequest data)
     {
         try
         {
-            UserInterface.getInstance().addUser(name, pass);
-            return Response.status(200).build();
+            UserInterface.getInstance().addUser(data.username, data.password);
+            return Response
+                     .status(200)
+                     .entity(new MessageResponse("User successfully created."))
+                     .build();
         }
         catch (NoSuchAlgorithmException e)
         {   // TODO: Log
@@ -108,13 +116,24 @@ public class UserAPI {
 
     @POST
     @Path("/Remove")
-    @Produces("application/json")
-    public Response Remove (@DefaultValue("") @FormParam("username") String name)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response Remove (UserRequest data)
     {
         try
         {
-            UserInterface.getInstance().delUser(name);
-            return Response.status(200).build();
+            // Authenticate to remove user
+            if (!UserInterface.getInstance().authenticateUser(data.username, data.password))
+                return Response
+                         .status(401)
+                         .entity(new ErrorResponse("Failed to authenticate! Perhaps user already removed?"))
+                         .build(); // Unauthorised
+
+            UserInterface.getInstance().delUser(data.username);
+            return Response
+                     .status(200)
+                     .entity(new MessageResponse("User successfully removed."))
+                     .build();
         }
         catch (NoSuchAlgorithmException e)
         {   // TODO: Log

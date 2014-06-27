@@ -48,6 +48,16 @@ chatControllers.controller('LoginCtrl',
   [ '$scope', 'User', '$location',
     function ($scope, User, $location)
     {
+      var XHRMessage = function (value, responseHeaders)
+      {
+        alert(value.message);
+      }
+
+      var XHRError = function (httpResponse)
+      {
+        alert(httpResponse.data.error);
+      }
+
       $scope.login   = function (username, password)
       {
         User.login(null, {'username' : username, 'password' : password},
@@ -55,22 +65,17 @@ chatControllers.controller('LoginCtrl',
           {
             console.log(value);
             console.log(responseHeaders);
-          },
-          function (httpResponse) // Error
-          {
-            console.log(httpResponse);
-          }
-        );
+          }, XHRError);
       };
 
       $scope.addUser = function (username, password)
       {
-        User.addUser(null, {'username' : username, 'password' : password});
+        User.addUser(null, {'username' : username, 'password' : password}, XHRMessage, XHRError);
       };
 
-      $scope.delUser = function (password)
+      $scope.delUser = function (username)
       {
-        User.delUser(null, {'username' : username});
+        User.delUser(null, {'username' : username}, XHRMessage, XHRError);
       };
     }
   ]

@@ -22,9 +22,9 @@ chatServices.factory('User',
     {
       return $resource('rest/User/:action',
         {},
-        {   login   : {method : 'POST', params  : {action : 'Login'}, isArray : true}
-          , addUser : {method : 'POST', params  : {action : 'Add'},   isArray : true}
-          , deluser : {method : 'POST', params : {action : 'Remove'}}
+        {   login   : {method : 'POST', params  : {action : 'Login'}, isArray : false}
+          , addUser : {method : 'POST', params  : {action : 'Add'},   isArray : false}
+          , delUser : {method : 'POST', params : {action : 'Remove'}, isArray : false}
         }
       );
     }
