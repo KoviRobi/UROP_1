@@ -29,7 +29,7 @@ public class ChatInterface {
 
     }
 
-    public List<DBObject> getMessages (int time)
+    public List<DBObject> getMessages (long time)
     {
         List<DBObject> rtn = new ArrayList<DBObject>();
 

@@ -10,7 +10,8 @@ import java.security.NoSuchAlgorithmException;
 
 import java.net.UnknownHostException;
 
-import java.util.Collection;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
@@ -27,12 +28,12 @@ public class UserInterface {
     static Map<Long, String> AuthenticatedUsers = new HashMap<Long, String>();
     static Random rand = new Random();
 
-    static Collection<String> getUsers ()
+    static List<String> getUsers ()
     {
-        return AuthenticatedUsers.values();
+        return new LinkedList<String>(AuthenticatedUsers.values());
     }
 
-    static String getUser (String token)
+    static String getUser (long token)
     {
         return AuthenticatedUsers.get(token);
     }

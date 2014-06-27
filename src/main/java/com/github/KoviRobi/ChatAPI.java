@@ -1,12 +1,16 @@
 package com.github.KoviRobi;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
+import javax.ws.rs.GET;
 import javax.ws.rs.CookieParam;
-import javax.ws.rs.FormParam;
 import javax.ws.rs.DefaultValue;
+
+import java.util.List;
+import com.mongodb.DBObject;
 
 import java.net.UnknownHostException;
 
@@ -14,16 +18,35 @@ import java.net.UnknownHostException;
 public class ChatAPI {
 
     // Gets messages since lastMessage
-    // @POST
-    @javax.ws.rs.GET
+    @GET
     @Path("/GetMessages")
     @Produces("application/json")
-    public Response GetMessages (@DefaultValue("0") @FormParam("lastMessage") int lastMessage)
+    public Response GetMessages (@DefaultValue("0") @CookieParam("lastMessage") long lastMessage)
     {
         try
         {
-            return Response.status(200). entity
-                (ChatInterface.getInstance().getMessages(lastMessage)).build();
+            List<DBObject> messages = ChatInterface.getInstance().getMessages(lastMessage);
+
+            NewCookie lastMessageCookie;
+            if (messages.size()>0)
+            {
+                lastMessageCookie = new NewCookie(
+       /* name:    */   "lastMessage"
+       /* value:   */ , messages.get(messages.size()-1).get("time").toString()
+       /* path:    */ , "/UROP_1"
+       /* domain:  */ , null
+       /* comment: */ , "Last seen message"
+       /* maxAge:  */ , NewCookie.DEFAULT_MAX_AGE
+       /* secure:  */ , false
+                        );
+            }
+            else
+               lastMessageCookie = null;
+
+            return Response.status(200)
+                .cookie(lastMessageCookie)
+                .entity(messages)
+                .build();
         }
         catch(UnknownHostException e)
         {
@@ -35,15 +58,16 @@ public class ChatAPI {
     @POST
     @Path("/SendMessage")
     @Produces("application/json")
-    public Response SendMessage (@CookieParam("token") String token,
-                                 @FormParam("message") String message)
+    public Response SendMessage (@CookieParam("token") long token,
+                                 //@FormParam("message") String message)
+                                 @javax.ws.rs.QueryParam("message") String message)
     {
         if (message == null)
             return Response.status(400).build();
 
         try
         {
-            ChatInterface.getInstance().sendMessage(UserInterface.getUser(token), message);
+            ChatInterface.getInstance().sendMessage(UserInterface.getUser(UserInterface.setUser("foo")), message);
             return Response.status(200).build();
         }
         catch(UnknownHostException e)
@@ -52,13 +76,13 @@ public class ChatAPI {
         }
     }
 
-    @POST
+    @GET
     @Path("/GetUsers")
     @Produces("application/json")
     public Response GetUsers ()
     {
         // TODO:
-        return Response.status(200).entity("").build();
+        return Response.status(200).entity(UserInterface.getUsers()).build();
     }
 
 }

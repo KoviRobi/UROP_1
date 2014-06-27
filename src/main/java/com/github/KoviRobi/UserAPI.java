@@ -1,6 +1,7 @@
 package com.github.KoviRobi;
 
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
@@ -24,10 +25,16 @@ public class UserAPI {
         try
         {   // TODO: Avoid repeated code, viz. same catch blocks
             if (UserInterface.getInstance().authenticateUser(name, pass))
+            {
                 // TODO: HMAC and proper cookies!
-                 return Response.status(200).entity
-                     (new LoginResponse(Long.toString(UserInterface.setUser(name)))).build();
-            else return Response.status(200).entity(new LoginResponse("")).build();
+                long userToken = UserInterface.setUser(name);
+                NewCookie authCookie = new NewCookie("token", Long.toString(userToken));
+
+                 return Response.status(200)
+                     .cookie(authCookie)
+                     .build();
+            }
+            else return Response.status(401).build();
         }
         catch (NoSuchAlgorithmException e)
         {   // TODO: Log
