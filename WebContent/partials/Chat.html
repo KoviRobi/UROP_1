@@ -1,0 +1,27 @@
+<!-- vim: set sts=2 ts=2 sw=2 et : -->
+<div id="message-history">
+  <table>
+    <tr ng-repeat="message in messages track by $index">
+      <td id="time" class="tiny-font">{{message.time}}</td>
+      <td id="username" class="tiny-font">[{{message.username}}]</td>
+      <td class="normal-font">{{message.message}}</td>
+    </tr>
+  </table>
+</div>
+<div id="users">
+  <ul>
+    <li ng-repeat="user in users track by $index | filter:userQuery" class="online">
+      <p class="normal-font">{{user.name}}</p>
+    </li>
+  </ul>
+  <div id="user-query">
+    <input id="user-query-box" ng-model="userQuery" />
+  </div>
+</div>
+<div id="chat-message">
+  <textarea ng-model="chatMessageTextarea" name="chatMessageTextarea" class="normal-font" id="chat-message-textarea" required></textarea>
+  <input type="submit"
+         id="chat-message-submit"
+         ng-click="sendMessage(chatMessageTextarea);"
+         ng-init="chatMessageTextarea=''"/>
+</div>

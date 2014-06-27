@@ -7,9 +7,9 @@ chatServices.factory('Chat',
     {
       return $resource('rest/Chat/:action',
         {},
-        { getMessages: {method: 'GET', params: {action: 'GetMessages'}, isArray: true}
-        , getUsers: {method: 'GET', params: {action: 'GetUsers'}, isArray: true}
-        , sendMessage: {method: 'POST', params: {action: 'SendMessage'}}
+        {   getMessages : {method : 'GET', params  : {action : 'GetMessages'}, isArray : true}
+          , getUsers    : {method : 'GET', params  : {action : 'GetUsers'},    isArray : true}
+          , sendMessage : {method : 'POST', params : {action : 'SendMessage'}}
         }
       );
     }

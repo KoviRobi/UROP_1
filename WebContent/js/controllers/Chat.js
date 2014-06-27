@@ -43,3 +43,11 @@ chatControllers.controller('ChatCtrl',
     }
   ]
 );
+
+chatControllers.controller('LoginCtrl',
+  [
+    function ()
+    {
+    }
+  ]
+);
