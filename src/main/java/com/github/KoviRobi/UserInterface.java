@@ -23,8 +23,7 @@ public class UserInterface {
     MessageDigest md;
     DBCollection usersCollection;
 
-    // {{{ TODO: Implement using cookies
-
+    // {{{ TODO: Is this the best way? Also, time to live? Also, stale tokens?
     static Map<Long, String> AuthenticatedUsers = new HashMap<Long, String>();
     static Random rand = new Random();
 

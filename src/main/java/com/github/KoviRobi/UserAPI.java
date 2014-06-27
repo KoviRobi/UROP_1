@@ -2,6 +2,7 @@ package com.github.KoviRobi;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.NewCookie;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
@@ -18,6 +19,7 @@ public class UserAPI {
     // Entry point for login method
     @POST
     @Path("/Login")
+    @Consumes("application/json")
     @Produces("application/json")
     public Response Login (@DefaultValue("") @FormParam("username") String name, 
                            @DefaultValue("") @FormParam("password") String pass)
@@ -26,9 +28,20 @@ public class UserAPI {
         {   // TODO: Avoid repeated code, viz. same catch blocks
             if (UserInterface.getInstance().authenticateUser(name, pass))
             {
-                // TODO: HMAC and proper cookies!
+                // TODO: HMAC
                 long userToken = UserInterface.setUser(name);
-                NewCookie authCookie = new NewCookie("token", Long.toString(userToken));
+
+                NewCookie authCookie = new NewCookie(
+       /* name:    */   "token"
+       /* value:   */ , Long.toString(userToken)
+       /* path:    */ , "/UROP_1"
+       /* domain:  */ , null
+       /* comment: */ , "Authentication token"
+       /* maxAge:  */ , NewCookie.DEFAULT_MAX_AGE
+       /* secure:  */ , false
+                 );
+
+                System.err.println("Logged in: " + name + ":" + pass);
 
                  return Response.status(200)
                      .cookie(authCookie)

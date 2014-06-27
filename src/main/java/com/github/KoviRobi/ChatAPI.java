@@ -7,7 +7,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.GET;
 import javax.ws.rs.CookieParam;
-import javax.ws.rs.HeaderParam;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.DefaultValue;
 
 import java.util.List;
@@ -22,10 +22,14 @@ public class ChatAPI {
     @GET
     @Path("/GetMessages")
     @Produces("application/json")
-    public Response GetMessages (@DefaultValue("0") @CookieParam("lastMessage") long lastMessage)
+    public Response GetMessages (@CookieParam("token") long token,
+              @DefaultValue("0") @CookieParam("lastMessage") long lastMessage)
     {
         try
         {
+            if (UserInterface.getUser(token) == null)
+                return Response.status(401).build(); // Unauthorised
+
             List<DBObject> messages = ChatInterface.getInstance().getMessages(lastMessage);
 
             NewCookie lastMessageCookie;
@@ -44,14 +48,14 @@ public class ChatAPI {
             else
                lastMessageCookie = null;
 
-            return Response.status(200)
+            return Response.status(200) // Success
                 .cookie(lastMessageCookie)
                 .entity(messages)
                 .build();
         }
         catch(UnknownHostException e)
         {
-            return Response.status(503).build();
+            return Response.status(503).build(); // Service (database) unavailable
         }
     }
 
@@ -60,8 +64,8 @@ public class ChatAPI {
     @Path("/SendMessage")
     @Produces("application/json")
     public Response SendMessage (@CookieParam("token") long token,
-                                 //@FormParam("message") String message)
-                                 @HeaderParam("message") String message)
+                                 @FormParam("message") String message)
+                                 //@HeaderParam("message") String message)
     {
         System.out.println(message);
         if (message == null)
@@ -69,12 +73,15 @@ public class ChatAPI {
 
         try
         {
+            if (UserInterface.getUser(token) == null)
+                return Response.status(401).build(); // Unauthorised
+
             ChatInterface.getInstance().sendMessage(UserInterface.getUser(UserInterface.setUser("foo")), message);
-            return Response.status(200).build();
+            return Response.status(200).build(); // Success
         }
         catch(UnknownHostException e)
         {
-            return Response.status(503).build();
+            return Response.status(503).build(); // Service (database) unavailable
         }
     }
 
@@ -83,8 +90,9 @@ public class ChatAPI {
     @Produces("application/json")
     public Response GetUsers ()
     {
-        // TODO:
-        return Response.status(200).entity(UserInterface.getUsers()).build();
+        return Response.status(200) // Success
+                .entity(UserInterface.getUsers())
+                .build();
     }
 
 }

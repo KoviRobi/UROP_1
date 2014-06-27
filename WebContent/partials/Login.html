@@ -1,13 +1,17 @@
 <!-- vim: set sts=2 ts=2 sw=2 et : -->
 <p>
-	<label for="username">Username:</label> <input type="text"
-		name="username" id="username" /> <br /> <label for="password">Password:</label>
-	<input type="password" name="password" id="password" /> <input
-		type="submit"
-		onclick='UserAction($("#username").val(), $("#password").val(), "Login")'
-		value="Send" /> <input type="button"
-		onclick='UserAction($("#username").val(), $("#password").val(), "Add")'
-		value="Create new user" /> <input type="button"
-		onclick='UserAction($("#username").val(), $("#password").val(), "Remove")'
-		value="Remove username" />
+  <label for="username">Username:</label>
+  <input type="text" name="username" ng-model="username" id="username" /> <br />
+
+  <label for="password">Password:</label>
+  <input type="password" name="password" ng-model="password" id="password" />
+  <input type="submit"
+      ng-click="login(username, password)"
+      value="Send" />
+  <input type="button"
+      ng-click="addUser(username, password)"
+      value="Create new user" />
+  <input type="button"
+      ng-click="delUser(username)"
+      value="Remove username" />
 </p>

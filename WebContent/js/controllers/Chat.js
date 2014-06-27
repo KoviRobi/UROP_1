@@ -39,15 +39,39 @@ chatControllers.controller('ChatCtrl',
 
       updateUsers();
 
-      // $interval(updateUsers, 5000);
+      $interval(updateUsers, 5000);
     }
   ]
 );
 
 chatControllers.controller('LoginCtrl',
-  [
-    function ()
+  [ '$scope', 'User', '$location',
+    function ($scope, User, $location)
     {
+      $scope.login   = function (username, password)
+      {
+        User.login(null, {'username' : username, 'password' : password},
+          function (value, responseHeaders) // Success
+          {
+            console.log(value);
+            console.log(responseHeaders);
+          },
+          function (httpResponse) // Error
+          {
+            console.log(httpResponse);
+          }
+        );
+      };
+
+      $scope.addUser = function (username, password)
+      {
+        User.addUser(null, {'username' : username, 'password' : password});
+      };
+
+      $scope.delUser = function (password)
+      {
+        User.delUser(null, {'username' : username});
+      };
     }
   ]
 );

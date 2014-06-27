@@ -21,7 +21,7 @@ chatApp.config(
           })
         .otherwise(
           {
-            redirectTo: '/Chat'
+            redirectTo: '/Login'
           })
         ;
     }
