@@ -11,7 +11,7 @@
 <div id="users">
   <ul>
     <li ng-repeat="user in users track by $index | filter:userQuery" class="online">
-      <p class="normal-font">{{user.0}}</p>
+      <p class="normal-font">{{user.message}}</p>
     </li>
   </ul>
   <div id="user-query">

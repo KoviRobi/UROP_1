@@ -28,9 +28,12 @@ public class UserInterface {
     static Map<Long, String> AuthenticatedUsers = new HashMap<Long, String>();
     static Random rand = new Random();
 
-    static List<String> getUsers ()
+    static List<ResponseType> getUsers ()
     {
-        return new LinkedList<String>(AuthenticatedUsers.values());
+        LinkedList<ResponseType> rtn = new LinkedList<ResponseType>();
+        for (String s : AuthenticatedUsers.values())
+            rtn.push(new MessageResponse(s));
+        return rtn;
     }
 
     static String getUser (long token)
